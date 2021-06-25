@@ -1,21 +1,25 @@
 from seleniumbase import BaseCase
 import time
 from page_object.home_page import HomePage
+from .application import *
 
-class HomeTest(HomePage):
+app = Application()
 
-    def setUp(self):
-        super().setUp()
-        print("Its start of the every test")
-        self.open("https://practice.automationbro.com/")
-        self.maximize_window()
-        #self.login()
+class HomeTest(BaseTestClass):
 
 
-    def tearDown(self):
-        #self.logout()
-        super().tearDown()
-        print("its the end of every test")
+    # def setUp(self):
+    #     super().setUp()
+    #     print("Its start of the every test")
+    #     self.open("https://practice.automationbro.com/")
+    #     self.maximize_window()
+    #     app.home.login(self)
+
+
+    # def tearDown(self):
+    #     app.home.logout(self)
+    #     super().tearDown()
+    #     print("its the end of every test")
         
 
 
@@ -23,9 +27,10 @@ class HomeTest(HomePage):
 
     def test_home_page(self):
         #self.open_home_page()
+        app.home.login(self)
 
         #assert page title
-        self.assert_title_of_page("Practice E-Commerce Site – Automation Bro")
+        app.home.assert_title_of_page(self, "Practice E-Commerce Site – Automation Bro")
 
         #assert logo
         self.assert_element("img[class='custom-logo']")
@@ -41,6 +46,7 @@ class HomeTest(HomePage):
         self.scroll_to_bottom()
         self.assert_text("Copyright © 2020 Automation Bro", "div[class='tg-site-footer-section-1']>p")
 
+        app.home.logout(self)
 
     def test_menu_links(self):
         #self.open_home_page()
@@ -57,9 +63,9 @@ class HomeTest(HomePage):
 
     def test_contact_page(self):
         #self.open_home_page()
-        self.go_to_link('Contact')
-        self.fill_in_contact_info()
-        self.assertEqual(self.contact_message_success(), "Thanks for contacting us! We will be in touch with you shortly")
+        app.home.go_to_link('Contact')
+        app.home.fill_in_contact_info()
+        self.assertEqual(app.home.contact_message_success(self), "Thanks for contacting us! We will be in touch with you shortly")
 
 
 
